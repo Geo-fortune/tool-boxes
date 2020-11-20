@@ -1,6 +1,6 @@
 
 ## 国际化
-[English] | 中文
+[English](README.md) | 中文
 
 ## 样例目录
 
