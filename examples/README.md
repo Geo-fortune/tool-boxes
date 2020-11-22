@@ -21,8 +21,10 @@ This repository includes some example modern CMake configurations which I have p
 
 
 
+
 #### reference
  * [awesome cmake](https://github.com/onqtam/awesome-cmake)
+ * [cmake-exmaples](https://github.com/ttroy50/cmake-examples)
 
 
 ### boost-examples
