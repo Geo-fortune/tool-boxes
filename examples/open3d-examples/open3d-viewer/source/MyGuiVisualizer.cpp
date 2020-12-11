@@ -66,6 +66,7 @@
 #include "open3d/visualization/visualizer/GuiSettingsView.h"
 #include "open3d/visualization/visualizer/GuiWidgets.h"
 #include "open3d/visualization/visualizer/Receiver.h"
+#include "open3d/visualization/gui/ImageLabel.h" // image visualization
 
 #define LOAD_IN_NEW_WINDOW 0
 
@@ -231,29 +232,37 @@ std::shared_ptr<gui::VGrid> CreateCameraDisplay(gui::Window *window) {
 }
 
 // create image show di
-std::shared_ptr<gui::Vert> CreateImageDisplay(gui::Window *window){
+std::shared_ptr<gui::VGrid> CreateImageDisplay(gui::Window *window){
     auto &theme = window->GetTheme();
+    gui::Margins margins(theme.font_size);
 
-    auto label = std::make_shared<open3d::visualization::gui::Vert>();
+    auto layout = std::make_shared<open3d::visualization::gui::VGrid>(1, 0, margins);
 
     //获取可执行二进制文件的绝对路径，找到相对路径下的图片
+    std::string image_path =  open3d::utility::filesystem::GetWorkingDirectory() +  "/../../test-data/test_image_1.jpg";
+    open3d::utility::LogInfo("image path: {}", image_path);
 
-    std::string image_path =  open3d::utility::filesystem::GetWorkingDirectory() +  "../../test-data/test_image_1.jpg";
-    
     auto image_ptr = std::make_shared<geometry::Image>();
 
     if(!open3d::io::ReadImage(image_path, *image_ptr)){
         open3d::utility::LogWarning("Failed to read {}", image_path.c_str());
+    } else {
+        open3d::utility::LogInfo("Success to read {}", image_path.c_str());
     }
+    auto image_ptr = std::make_shared<open3d::geometry::Image>();
+    io::ReadImage(image_path, *image_ptr);
+    image_ptr->Downsample()->Downsample()->Downsample();
 
-    // geometry::Image trans to gui::UIImage
+    auto ui_image = std::make_shared<visualization::gui::UIImage>(*image_ptr);
+    ui_image->SetScaling(visualization::gui::UIImage::Scaling::ANY);
+    ui_image->CalcDrawParams();
+    ui_image->CalcPreferredSize(theme);
+    auto image_label = std::make_shared<visualization::gui::ImageLabel>(ui_image);
+    image_label->CalcPreferredSize(theme);
 
-    // auto ui_image = std::make_shared<gui::UIImage>(image_path.c_str());
+    layout->AddChild(image_label);
 
-    // label->AddChild(ui_image);
-    label->AddStretch();
-
-    return label;
+    return layout;
 }
 
 
@@ -360,7 +369,7 @@ struct GuiVisualizer::Impl {
     std::shared_ptr<gui::SceneWidget> scene_wgt_;
     std::shared_ptr<gui::VGrid> help_keys_;
     std::shared_ptr<gui::VGrid> help_camera_;
-    std::shared_ptr<gui::Vert> help_image_;
+    std::shared_ptr<gui::VGrid> help_image_;
     std::shared_ptr<Receiver> receiver_;
 
     struct Settings {
@@ -764,7 +773,7 @@ void GuiVisualizer::Init() {
     impl_->help_camera_ = CreateCameraDisplay(this);
     impl_->help_camera_->SetVisible(false);
     AddChild(impl_->help_camera_);
-
+    // help_image
     impl_->help_image_ = CreateImageDisplay(this);
     impl_->help_image_->SetVisible(true);
     AddChild(impl_->help_image_);
@@ -892,7 +901,7 @@ void GuiVisualizer::Layout(const gui::Theme &theme) {
     // Draw image in lower right
     const auto HELP_IMAGE_WIDTH = 18 * em;
     const auto HELP_IMAGE_HEGITH = 14 * em;
-    gui::Rect helpImageRect(r.width-HELP_IMAGE_WIDTH, r.height-HELP_IMAGE_HEGITH, HELP_IMAGE_WIDTH,HELP_IMAGE_HEGITH);
+    gui::Rect helpImageRect(r.width-HELP_IMAGE_WIDTH, r.height-HELP_IMAGE_HEGITH, HELP_IMAGE_WIDTH, HELP_IMAGE_HEGITH);
     impl_->help_image_->SetFrame(helpImageRect);
     impl_->help_image_->Layout(theme);
 
@@ -1146,7 +1155,14 @@ void GuiVisualizer::OnMenuItemSelected(gui::Menu::ItemId item_id) {
         case HELP_IMAGE:{
             
             // 弹出显示图片的label
-
+            bool is_visible = !impl_->help_image_->IsVisible();
+            impl_->help_image_->SetVisible(is_visible);
+            auto menubar = gui::Application::GetInstance().GetMenubar();
+            menubar->SetChecked(HELP_IMAGE, is_visible);
+            // 开始显示label
+            if(is_visible){
+                
+            }
             break;
         }
     }
