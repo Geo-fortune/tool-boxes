@@ -51,8 +51,8 @@ int main(int argc, char ** argv){
 
         std::cout << "imgSize:" << img.cols << "," << img.rows << std::endl;
 
-        cv::imshow("test",img);
-        cv::waitKey(1);
+        // cv::imshow("test",img);
+        // cv::waitKey(1);
         // std::string str_id = 0;
         // std::string str_time = 0;
          

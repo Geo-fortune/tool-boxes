@@ -40,7 +40,10 @@ int main(int argc, char ** argv) {
     {
 
         cv::Mat img(IMAGE_HEIGHT,IMAGE_WIDTH, CV_8UC3, shared_data_p->image_data_);
-        cv::imshow("test", img);
+        
+        cv::cvtColor(img,img,cv::COLOR_BGR2GRAY);
+
+        cv::imshow("test1", img);
         cv::waitKey(1);
 
 
