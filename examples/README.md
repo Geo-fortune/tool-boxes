@@ -9,17 +9,25 @@ CMake is a cross-platform open-source meta-build system which can build, test an
 This repository includes some example modern CMake configurations which I have picked up when exploring it’s usage for various projects. The examples are laid out in a tutorial like format. The first examples are very basic and slowly increase in complexity drawing on previous examples to show more complex use cases.
 
 
-
 ## Examples Content
 
-- cmake-examples
-- boost-examples
-- opencv-examples
-
+- [ ] cmake-examples
+- [ ] boost-examples
+- [ ] opencv-examples
+  - [ ] filestorage_json_exmaple
+  - [ ] aruco_marker_example
+- [X] protobuf2_example
+- [X] protobuf3_example
+- [X] gtest_exmaple
+- [ ] json_exmaple
+- [ ] 
+- [ ] 
 
 ### cmake-examples
 
-
+### protobuf2_example
+### protobuf3_example
+### gtest_example
 
 
 #### reference

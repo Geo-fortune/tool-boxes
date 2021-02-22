@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package calibration;
+
+message Config {
+    bool use_rosbag = 1;
+    RosbagParams rosbag_params = 2;
+    LidarCalibParams lidar_calib_params = 3;
+    CameraCalibParams camera_calib_params = 4;
+    MarkerBoardParmas marker_board_params = 5;
+}
+
+message RosbagParams {
+    string bag_file = 1;
+    string save_pth = 2;
+    string image_topic = 3;
+    string cloud_topic = 4;
+}
+
+message LidarCalibParams {
+    repeated int32 image_size = 1;
+    repeated float xyz_range = 2;
+    float intensity_threshold = 3;
+    int32 marker_count = 4;
+    bool use_camera_info = 5;
+    repeated float project_matrix = 6;
+    int32 iteration_count = 7;
+    repeated float lidar_init_rot = 8;
+    repeated float lidar_origin = 9;
+}
+
+message CameraCalibParams {
+    string camera_config_path =1;
+}
+
+message MarkerBoardParmas {
+    int32 marker_number = 1;
+    float board_length_e1 = 2;
+    float board_length_e2 = 3;
+    float board_length_b1 = 4;
+    float board_length_b2 = 5;
+    float marker_length = 6;
+}

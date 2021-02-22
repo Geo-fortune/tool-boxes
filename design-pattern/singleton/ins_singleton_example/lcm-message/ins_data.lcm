@@ -1,0 +1,36 @@
+package admsg.ins;
+
+// Channel name: "InsData"
+struct InsData
+{
+    int64_t timestamp;  // milliseconds
+    int64_t latitude;   // 10^8
+    int64_t lontitude;  // 10^8
+    double height;      // m
+    double speed;       // m/s
+    double roll;        // degree
+    double pitch;       // degree
+    double heading;     // degree
+
+    double xVelocity;       // m/s North Velocity
+    double yVelocity;       // m/s East Velocity
+    double zVelocity;       // m/s Up Velocity, it is different with others
+    double xAngularRate;    // degrees/s Longitudinal axis
+    double yAngularRate;    // degrees/s Transverse axis
+    double zAngularRate;    // degrees/s Down axis
+    double xAcceleration;   // m/s^2 Longitudinal axis
+    double yAcceleration;   // m/s^2 Transverse axis
+    double zAcceleration;   // m/s^2 Down axis
+
+    int64_t rmsTimestamp;   // milliseconds
+
+    double xPostionRms;     // m
+    double yPositionRms;    // m
+    double zPositionRms;    // m
+    double xVelocityRms;    // m/s
+    double yVelocityRms;    // m/s
+    double zVelocityRms;    // m/s
+    double rollRms;         // degrees
+    double pitchRms;        // degrees
+    double headingRms;      // degrees
+}
